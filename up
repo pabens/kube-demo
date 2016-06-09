@@ -1,0 +1,10 @@
+#!/bin/bash
+# Create Kubernetes cluster, launch KubeDNS and 2 tier Guestbook App
+
+./bin/cluster-create
+./bin/config-kubectl
+./bin/kubectl-tunnel
+./bin/launch-dns
+./bin/launch-dashboard
+./bin/launch-guestbook
+

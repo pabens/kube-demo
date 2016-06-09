@@ -1,0 +1,5 @@
+#!/bin/bash
+# rolling update the guestbook frontend from v3 to v4
+
+kubectl rolling-update frontend --image=gcr.io/google_samples/gb-frontend:v4
+

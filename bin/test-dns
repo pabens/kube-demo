@@ -1,0 +1,19 @@
+#!/bin/bash
+# test kubedns with an nslookup on a busybox
+
+# create
+kubectl create -f ./cfg/busybox.yaml 2> /dev/null
+sleep 3
+
+# test
+echo; echo ....................
+kubectl exec busybox -- nslookup kubernetes.default
+echo; echo ....................
+kubectl exec busybox -- nslookup frontend.default
+echo; echo ....................
+kubectl exec busybox -- nslookup kubernetes-dashboard.kube-system
+echo; echo ....................
+
+# nuke
+kubectl delete pod busybox
+ 

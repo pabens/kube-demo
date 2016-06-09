@@ -1,0 +1,6 @@
+#!/bin/bash
+# nuke everything
+# warning: this kills ALL running containers
+
+./bin/cluster-destroy
+echo all gone!

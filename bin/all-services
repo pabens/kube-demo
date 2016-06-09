@@ -1,0 +1,6 @@
+#!/bin/bash
+# get both namespaces
+
+kubectl get svc --namespace="kube-system"
+kubectl get svc --namespace="default"
+

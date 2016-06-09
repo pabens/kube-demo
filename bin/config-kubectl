@@ -1,0 +1,6 @@
+#!/bin/bash
+# configure kubectl to talk to local cluster
+
+kubectl config set-cluster demo --server=http://localhost:8080
+kubectl config set-context demo --cluster=demo
+kubectl config use-context demo
