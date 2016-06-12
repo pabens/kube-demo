@@ -1,0 +1,31 @@
+#!/bin/bash
+# manage a docker-machine for single node docker kubernetes
+# this is docker-machine specific (no native docker beta support)
+
+function die { echo "ERROR: $@"; exit 1; }
+function info { echo "INFO: $@"; }
+
+if ! docker-machine status k8s &> /dev/null; then
+  info "creating new k8s docker machine..."
+  docker-machine create --driver virtualbox k8s || die "Couldnt create k8s docker-machine"
+else
+  info "using existing k8s docker machine"
+fi
+
+if [[ "$(docker-machine status k8s)" != "Running" ]]; then
+  info "k8s docker machine is not running. Staring it up..."
+  docker-machine start k8s
+else
+  info "machine is running"
+fi
+
+if [[ "$(docker-machine active)" != "k8s" ]]; then
+  info "docker machine environment is currently set to [$(docker-machine active)]"
+  docker-machine env k8s
+  die "please set the docker-machine environment to k8s as shown above"
+else
+  info "environment is configured"
+fi
+
+info "node looks good"
+exit 0

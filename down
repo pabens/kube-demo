@@ -2,5 +2,10 @@
 # nuke everything
 # warning: this kills ALL running containers
 
+kubectl delete -f ./cfg/guestbook/ 2> /dev/null
+kubectl delete -f ./cfg/kubernetes-dashboard.yaml 2> /dev/null
+kubectl delete -f ./cfg/skydns.yaml 2> /dev/null
+sleep 3
+
 ./bin/cluster-destroy
-echo all gone!
+echo Thats All Folks!

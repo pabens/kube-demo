@@ -1,0 +1,18 @@
+#!/bin/bash
+# things this demo needs in order to run
+
+function missing { echo "ERROR: please install $@"; rc=1; }
+
+rc=0
+
+[[ $(which kubectl) ]] || missing "kubectl"
+[[ $(which docker) ]] || missing "docker"
+[[ $(which docker-machine) ]] || missing "docker-machine"
+[[ $(which VirtualBox) ]] || missing "VirtualBox"
+[[ $(which pkill) ]] || missing "pkill"
+[[ $(which nohup) ]] || missing "nohup"
+[[ $(which nc) ]] || missing "netcat"
+[[ $(which curl) ]] || missing "curl"
+
+
+exit $rc

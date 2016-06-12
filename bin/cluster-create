@@ -3,8 +3,14 @@
 # requires docker-machine at this time. no native docker beta support
 
 unset SSL_CERT_FILE
+url='https://storage.googleapis.com/kubernetes-release/release/stable.txt'
 
-export K8S_VERSION=$(curl -sS https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+export K8S_VERSION=$(curl -sS ${url})
+
+if [[ -z "$K8S_VERSION" ]]; then
+  echo "ERROR: Couldnt get K8S_VERSION from ${url}"
+  exit 1
+fi
 
 export ARCH=amd64
 
@@ -30,6 +36,8 @@ docker run -d \
 echo -n waiting for cluster
 while ! kubectl cluster-info &> /dev/null; do
   echo -n .
+  ((n++))
+  [[ "$n" -gt 60 ]] && break
   sleep 1
 done
 echo

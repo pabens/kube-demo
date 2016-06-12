@@ -2,15 +2,16 @@
 # stop dockerized kubernetes and clean docker host
 # this is docker-machine specific (no native docker beta support)
 
-kubectl delete -f ./cfg/guestbook/ 2> /dev/null
-
+echo -n "removing containers"
 while [ $(docker ps -q | wc -l | awk '{print $1}') -gt 0 ]; do
-  echo "removing containers"
+  echo -n '.'
   docker rm -f $(docker ps -aq) &> /dev/null
   sleep 2
 done
+echo
 
 echo "cleaning docker host"
-docker-machine ssh `docker-machine active` /home/docker/kube-clean.sh
-
-
+docker-machine ssh `docker-machine active` << EOF
+  cat /proc/mounts | grep /var/lib/kubelet | awk '{print $2}' | xargs sudo umount 2> /dev/null
+  sudo rm -rf /var/lib/kubelet || sudo reboot
+EOF

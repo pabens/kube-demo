@@ -1,10 +1,32 @@
 #!/bin/bash
-# Create Kubernetes cluster, launch KubeDNS and 2 tier Guestbook App
+# Create A Containerized Single Node Kubernetes Cluster
+# Launch KubeDNS, Dashboard and the 2 tier Guestbook App
 
-./bin/cluster-create
-./bin/config-kubectl
-./bin/kubectl-tunnel
-./bin/launch-dns
-./bin/launch-dashboard
-./bin/launch-guestbook
+function die { echo "ERROR: $@"; exit 1; }
+function info { echo "INFO: $@"; }
 
+info "Containerized Single Node Kubernetes Demo"
+info "KubeDNS, Dashboard and Guestbook"
+
+# Check Environment
+./bin/prereqs || die "unable to start"
+
+# Create Cluster
+./bin/manage-node || die "node not ready"
+./bin/kubectl-tunnel || die "tunnel not ready"
+./bin/cluster-create || die "cluster create failed"
+./bin/kubectl-config || die "config failed"
+
+# Launch Apps
+kubectl create namespace kube-system
+kubectl create -f ./cfg/kube-dns.yaml || die "launch of KubeDNS failed"
+kubectl create -f ./cfg/kube-dashboard.yaml || die "launch of dashboard failed"
+kubectl create -f ./cfg/guestbook/ || die "launch of guestbook failed"
+
+# Give Info
+info 'kubectl get pod --namespace="kube-system"'
+info 'kubectl get pod --namespace="default"'
+info Dashboard available via kube proxy at...
+info http://localhost:8080/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/workload
+info Guestbook available via kube proxy at...
+info http://localhost:8080/api/v1/proxy/namespaces/default/services/frontend/

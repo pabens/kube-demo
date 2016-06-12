@@ -1,5 +1,8 @@
 # kube-demo
 
+Create a containerized, single node Kubernetes cluster and launch KubeDNS, Dashboard and the 2 tier Guestbook App into it.
+
+
 ## up
 
 1. Create a Kubernetes single local node on OSX docker-machine.
@@ -25,7 +28,7 @@
 
 ## update
 
-1. Perform a rolling update of the Guestbook application frontend from the initial controller v3 to v4 available in the gcr.io registry
+1. Perform a rolling update of the Guestbook application frontend from the initial controller v3 to v4 available from the gcr.io registry
 
 ```
 ./bin/update-gb-frontend
@@ -39,3 +42,13 @@
 ```
 ./bin/test-dns
 ```
+
+# Reference & Credit
+
+[The Guestbook example](http://releases.k8s.io/release-1.1/examples/guestbook/README.md)
+
+[Dashboard](https://github.com/kubernetes/dashboard)
+
+[Running Kubernetes Locally via Docker](http://kubernetes.io/docs/getting-started-guides/docker/)
+
+[Deploying DNS](http://kubernetes.io/docs/getting-started-guides/docker-multinode/deployDNS/)
